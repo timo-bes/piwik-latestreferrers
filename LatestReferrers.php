@@ -10,50 +10,60 @@
  */
 
 class Piwik_LatestReferrers extends Piwik_Plugin {
-
+	
+	/* Archive indexes */
+    const REFERRER = 1;
+    const REFERRER_URL = 2;
+    const REFERRER_KEYWORD = 3;
+    const ENTRY_IDACTION = 4;
+    const ENTRY_URL = 5;
+    const TIME = 6;
+    const OCCURRENCES = 7;
+    
+    /** Columns traslations */
+    private static $columnTranslations = array(
+    	self::REFERRER => 'LatestReferrers_Referrer',
+    	self::REFERRER_URL => 'LatestReferrers_ReferrerUrl',
+	    self::REFERRER_KEYWORD => 'LatestReferrers_ReferrerKeyword',
+	    self::ENTRY_IDACTION => 'entry_idaction',
+	    self::ENTRY_URL => 'LatestReferrers_EntryUrl',
+	    self::TIME => 'LatestReferrers_Time',
+	    self::OCCURRENCES => 'LatestReferrers_Occurrences'
+    );
+	
+	/** Translate and show table columns */
+    public static function displayColumns($view, $columns) {
+    	foreach ($columns as $column) {
+	    	$view->setColumnTranslation($column,
+	    			Piwik_Translate(self::$columnTranslations[$column]));
+    	}
+    	$view->setColumnsToDisplay($columns);
+    }
+    
 	/** Information about this plugin */
 	public function getInformation() {
 		return array(
 			'description' => Piwik_Translate('LatestReferrers_PluginDescription'),
 			'author' => 'Timo Besenreuther, EZdesign',
 			'author_homepage' => 'http://www.ezdesign.de/',
-			'version' => '0.0',
+			'version' => '0.1',
 			'translationAvailable' => true
 		);
 	}
 	
 	/** Register Hooks */
 	public function getListHooksRegistered() {
-        $hooks = array(
-        	'AssetManager.getJsFiles' => 'getJsFiles',
-        	'AssetManager.getCssFiles' => 'getCssFiles',
-			'Menu.add' => 'addMenu',
-        	'WidgetsList.add' => 'addWidgets'
+        return array(
+			'Menu.add' => 'addMenu'
         );
-        return $hooks;
     }
-    
-    /** Add JavaScript */
-    public function getJsFiles($notification) {
-		$jsFiles = &$notification->getNotificationObject();
-		$jsFiles[] = 'plugins/LatestReferrers/templates/latestreferrers.js';
-	}
-	
-	/** Add CSS */
-    public function getCssFiles($notification) {
-		$cssFiles = &$notification->getNotificationObject();
-		$cssFiles[] = 'plugins/LatestReferrers/templates/latestreferrers.css';
-	}
 	
 	/** Menu hook */
 	public function addMenu() {
-		Piwik_AddMenu('Referers_Referers', 'LatestReferrers_LatestReferrers',
-				array('module' => 'LatestReferrers', 'action' => 'index'));
-	}
-	
-	/** Provide Widgets */
-	public function addWidgets() {
-		// TODO: widgets
+		Piwik_AddMenu('Referers_Referers', 'LatestReferrers_LatestLinks',
+				array('module' => 'LatestReferrers', 'action' => 'links'));
+		Piwik_AddMenu('Referers_Referers', 'LatestReferrers_LatestSearches',
+				array('module' => 'LatestReferrers', 'action' => 'searches'));
 	}
 	
 }
