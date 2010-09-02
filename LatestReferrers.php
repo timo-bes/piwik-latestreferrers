@@ -46,7 +46,7 @@ class Piwik_LatestReferrers extends Piwik_Plugin {
 			'description' => Piwik_Translate('LatestReferrers_PluginDescription'),
 			'author' => 'Timo Besenreuther, EZdesign',
 			'author_homepage' => 'http://www.ezdesign.de/',
-			'version' => '0.1',
+			'version' => '0.1.0',
 			'translationAvailable' => true
 		);
 	}
