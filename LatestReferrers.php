@@ -6,7 +6,7 @@
  * Author:   Timo Besenreuther
  *           EZdesign.de
  * Created:  2010-09-01
- * Modified: 2010-09-01
+ * Modified: 2010-09-02
  */
 
 class Piwik_LatestReferrers extends Piwik_Plugin {
@@ -25,7 +25,6 @@ class Piwik_LatestReferrers extends Piwik_Plugin {
     	self::REFERRER => 'LatestReferrers_Referrer',
     	self::REFERRER_URL => 'LatestReferrers_ReferrerUrl',
 	    self::REFERRER_KEYWORD => 'LatestReferrers_ReferrerKeyword',
-	    self::ENTRY_IDACTION => 'entry_idaction',
 	    self::ENTRY_URL => 'LatestReferrers_EntryUrl',
 	    self::TIME => 'LatestReferrers_Time',
 	    self::OCCURRENCES => 'LatestReferrers_Occurrences'
@@ -46,7 +45,7 @@ class Piwik_LatestReferrers extends Piwik_Plugin {
 			'description' => Piwik_Translate('LatestReferrers_PluginDescription'),
 			'author' => 'Timo Besenreuther, EZdesign',
 			'author_homepage' => 'http://www.ezdesign.de/',
-			'version' => '0.1.0',
+			'version' => '0.1.1',
 			'translationAvailable' => true
 		);
 	}

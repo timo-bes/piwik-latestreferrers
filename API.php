@@ -7,7 +7,7 @@
  * Author:   Timo Besenreuther
  *           EZdesign.de
  * Created:  2010-09-01
- * Modified: 2010-09-01
+ * Modified: 2010-09-02
  */
 
 class Piwik_LatestReferrers_API {
@@ -35,9 +35,13 @@ class Piwik_LatestReferrers_API {
 	public function getLatestLinks($idSite, $period, $date, $onlyNew=false, $type=false) {
 		Piwik::checkUserHasViewAccess($idSite);
 		
+		$group = array();
 		$onlyNewSql = '';
 		if ($onlyNew) {
 			$onlyNewSql = 'HAVING `'.Piwik_LatestReferrers::OCCURRENCES.'` = 1';
+		} else {
+			$group[] = 'visit.referer_name';
+			$group[] = 'visit.visit_entry_idaction_url';
 		}
 		
 		if (!$type) {
@@ -45,11 +49,11 @@ class Piwik_LatestReferrers_API {
 		}
 		
 		if ($type == Piwik_Common::REFERER_TYPE_WEBSITE) {
-			$group = 'visit.referer_url';
+			$group[] = 'visit.referer_url';
 			$select = 'visit.referer_url AS `'
 					. Piwik_LatestReferrers::REFERRER_URL.'`';
 		} else {
-			$group = 'visit.referer_keyword';
+			$group[] = 'visit.referer_keyword';
 			$select = 'visit.referer_keyword AS `'
 					. Piwik_LatestReferrers::REFERRER_KEYWORD.'`';
 		}
@@ -71,9 +75,7 @@ class Piwik_LatestReferrers_API {
 				visit.idsite = '.intval($idSite).' AND
 				visit.referer_type = '.intval($type).'
 			GROUP BY
-				visit.referer_name,
-				'.$group.',
-				visit.visit_entry_idaction_url
+				'.implode(', ', $group).'
 			'.$onlyNewSql.'
 			ORDER BY
 				`'.Piwik_LatestReferrers::TIME.'` DESC
